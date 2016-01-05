@@ -8,20 +8,16 @@
 
 import UIKit
 
+
 class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
 
         tableView.dataSource = self
         tableView.delegate = self
-        
-        // Do any additional setup after loading the view.
-    
-        
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
@@ -43,6 +39,8 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
                 }
         });
         task.resume()
+    
+
     
     
     
