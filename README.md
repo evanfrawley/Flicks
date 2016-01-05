@@ -6,6 +6,8 @@ Time spent: **X** hours spent in total
 
 ## User Stories
 
+test
+
 The following **required** functionality is complete:
 
 - [ ] User can view a list of movies currently playing in theaters from The Movie Database.
