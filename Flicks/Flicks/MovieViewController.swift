@@ -13,6 +13,8 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     @IBOutlet weak var tableView: UITableView!
     
+    var movies:[NSDictionary]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -32,17 +34,17 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
             completionHandler: { (dataOrNil, response, error) in
                 if let data = dataOrNil {
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
-                    data, options:[]) as? NSDictionary {
-                        NSLog("response: \(responseDictionary)")
-                        
+                        data, options:[]) as? NSDictionary {
+                            NSLog("response: \(responseDictionary)")
+                            
+                            self.movies = responseDictionary["results"] as? [NSDictionary]
+                            self.tableView.reloadData()
                     }
                 }
         });
+        
         task.resume()
-    
-
-    
-    
+        
     
     }
 
@@ -52,16 +54,37 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        
+        if let movies = movies {
+            print("yes")
+            return movies.count
+            
+        } else {
+            print("no")
+            
+            return 0
+            
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         
-        cell.textLabel!.text = "row \(indexPath.row)"
+        let movie = movies![indexPath.row]
+        let title = movie["title"] as! String
+        let overview = movie["overview"] as! String
+        let posterPath = movie["poster_path"] as! String
         
-        println("row \(indexPath.row)")
+        let baseURL = "http://image.tmdb.org/t/p/w500"
+        let imageURL = NSURL(string: baseURL + posterPath)
+        
+        cell.titleLabel.text = title
+        
+        cell.posterImage
+        
+        cell.overviewLabel.text = overview
+        
         
         return cell
         
